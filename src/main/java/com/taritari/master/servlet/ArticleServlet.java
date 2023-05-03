@@ -97,7 +97,11 @@ public class ArticleServlet extends HttpServlet {
             Date createTime = (Date) objects[3];
             String numbers = objects[5].toString();
             Integer numberOfViews = Convert.toInt(objects[6]);
-
+            //获取文章评论
+            String ViewSql = "SELECT numberOfViews as views  FROM blog_articleviews WHERE articleNumber = "+numbers;
+            Query ViewsSql = session.createSQLQuery(ViewSql);
+            List<Object[]> resultList = ViewsSql.getResultList();
+            Object views = resultList.get(0);
 
             data.put("id",id);
             data.put("title",title);
@@ -106,6 +110,7 @@ public class ArticleServlet extends HttpServlet {
             data.put("numbers",numbers);
             data.put("numberOfViews",numberOfViews);
             data.put("tagName",tagName);
+            data.put("views",views);
             listData.add(data);
         }
         Map<String, Object> result = new HashMap<>();
